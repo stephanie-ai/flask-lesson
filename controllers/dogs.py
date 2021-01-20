@@ -14,8 +14,8 @@ def show(req,uid):
     return find_by_uid(uid),200
 
 def create(req):
-    new_cat = req.get_json()
-    new_cat['id'] = sorted (d ['id'] for d in dogs]) [-1]
+    new_dog = req.get_json()
+    new_dog['id'] = sorted (d ['id'] for d in dogs) [-1]
     dogs.append(new_dog)
     return new_dog, 201
 
@@ -30,7 +30,7 @@ def update(req, uid):
 
 def destroy(req, uid):
     dog = find_by_uid(uid)
-    dogs.remove(cat)
+    dogs.remove(dog)
     return dog, 204
 
 def find_by_uid(uid):

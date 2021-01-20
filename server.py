@@ -1,10 +1,45 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, g, render_template
 from flask_cors import CORS
 from controllers import dogs
 from werkzeug import exceptions
+from db import get_db
 
 server = Flask(__name__)
 CORS(server)
+
+@server.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
+
+def init_db():
+    with server.server_context():
+        db = get_db()
+        with server.open_resource('schema.sql', mode='r') as f:
+            db.cursor().executescript(f.read())
+        db.commit()
+
+@server.route('/new', methods=['GET', 'POST'])
+def new_dogs():
+    db = get_db()
+    cursor.db.cursor()
+
+    if request.method == 'POST':
+        name = request.form['name']
+        breed = request.form['breed']
+        owner = request.form['owner']
+        cursor.execute(
+            "INSERT INTO dogs (id, name, breed, owner) VALUES (? ? ?);",
+            (2, name, breed, owner)
+        )
+        db.commit()
+    
+    cursor.execute("SELECT * from dogs")
+    dogs = cursor.fetchall()
+
+    return render_template("new.html", dogs=dogs)
+
 
 @server.route('/')
 def home():
