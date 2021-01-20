@@ -7,7 +7,7 @@
 
 ### Run Demo
 
-- `cd flask-demo` 
+- open terminal 
 - `pipenv install -r requirements.txt`
 - `pipenv shell`
 - Tell terminal which application to work with:
